@@ -9,12 +9,6 @@ variable rh_oidc_provider_url {
     default = "rh-oidc.s3.us-east-1.amazonaws.com"
 }
 
-variable rh_oidc_provider_thumbprint {
-    description = "Thumbprint for the variable `rh_oidc_provider_url`"
-    type = string
-    default = "917e732d330f9a12404f73d8bea36948b929dffc"
-}
-
 variable operator_role_properties {
     description = ""
     type = object({
@@ -24,5 +18,4 @@ variable operator_role_properties {
         operator_name = string
         operator_namespace = string
     })
-
 }

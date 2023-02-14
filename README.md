@@ -73,7 +73,7 @@ In the above example:
 * operator_role_prefix = shaozhenprivate-w4e1
 * account_role_prefix = ManagedOpenShift
 * rh_oidc_endpoint_url = rh-oidc.s3.us-east-1.amazonaws.com
-* thumberprint - calculated 
+* thumbprint - calculated 
 
 
 The operator roles properties variable is the output of the data source `ocm_rosa_operator_roles` and it's a list of 6 maps which looks like:
@@ -169,3 +169,10 @@ module operator_roles {
 * aws_iam_role (resource)
 * aws_iam_role_policy_attachment
 * aws_caller_identity (data source)
+
+## BYO OIDC options
+
+For BYO OIDC the client has extra configurations in the form of boolean attributes that indicate if creating the operator roles or OIDC provider is needed, the attributes are:
+
+* create_operator_roles
+* create_oidc_provider
