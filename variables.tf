@@ -20,7 +20,7 @@ variable operator_roles_properties {
     }))
     validation {
       condition     = length(var.operator_roles_properties) == 6
-      error_message = "The list of operator roles should contains 6 elements"
+      error_message = "The list of operator roles should contains 6 elements."
     }
 }
 
