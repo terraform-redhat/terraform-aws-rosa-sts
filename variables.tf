@@ -1,6 +1,7 @@
 variable cluster_id {
     description = "cluster ID"
     type = string
+    default = ""
 }
 
 variable rh_oidc_provider_url {
@@ -18,22 +19,19 @@ variable operator_roles_properties {
         operator_name = string
         operator_namespace = string
     }))
-    validation {
-      condition     = length(var.operator_roles_properties) == 6
-      error_message = "The list of operator roles should contains 6 elements."
-    }
+    default = []
 }
 
 variable create_operator_roles {
     description = "When using BYO OIDC and reusing the operator roles set to false so as not to create operator roles"
     type = bool
-    default = true
+    default = false
 }
 
 variable create_oidc_provider {
     description = "When using BYO OIDC and reusing the OIDC provider set to false so as not to create identity provider"
     type = bool
-    default = true
+    default = false
 }
 
 variable create_account_roles {
