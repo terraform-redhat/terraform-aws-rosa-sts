@@ -9,7 +9,7 @@ variable rosa_openshift_version {
 }
 
 variable ocm_environment {
-    description = "The OCM environment. Should be one of those: production, staging, integration, local"
+    description = "the OCM environments. The value should be one of those: production, staging, integration, local"
     type = string
      validation {
         condition = anytrue([

@@ -1,6 +1,6 @@
 # ROSA STS terraform module
 
-Create rosa operator IAM roles and OIDC provider in a declarative way
+Create rosa account IAM roles, operator IAM roles and OIDC provider in a declarative way
 Terraform AWS ROSA STS
 
 In order to deploy [ROSA](https://docs.openshift.com/rosa/welcome/index.html) with [STS](https://docs.openshift.com/rosa/rosa_planning/rosa-sts-aws-prereqs.html), AWS Account needs to have the following roles placed:
@@ -31,8 +31,12 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 |rh_oidc_provider_url| string      | OIDC provider url                                                                                                                                  | "rh-oidc-staging.s3.us-east-1.amazonaws.com/11111111111111111111111111111111"                             |
 |rh_oidc_provider_thumbprint| string      | Thumbprint for https://rh-oidc.s3.us-east-1.amazonaws.com                                                                                          | "2222222222222222222222222222222222222222"                                                                |
 |operator_roles_properties| list of map | List of 6 items of ROSA Operator IAM Roles. Each item should contains: role_name, policy_name, service_accounts, operator_name, operator_namespace | can be found [below](https://github.com/terraform-redhat/terraform-aws-rosa-sts#get-clusters-information) |
+|account_role_prefix| string      | Account roles prefix name                                                                                                                          | "TerraformAccount" |
+|rosa_openshift_version| string      | The openshift cluster version                                                                                                                      | "4.12"             |
+|ocm_environment| string      |  the OCM environments. The value should be one of those: production, staging, integration, local                                                                                                                                                  | "production"       |
 
-## Get OCM Information
+
+## Get OCM Information for operator roles and OIDC provider
 
 When creating operator IAM roles and OIDC provider, the requirements are:
 * cluster id
@@ -146,7 +150,23 @@ operator_iam_roles = [
 ```
 ## Usage
 
-### Sample Usage
+### Sample Usage for account IAM roles
+
+```
+module "create_account_roles"{
+   source = "terraform-redhat/rosa-sts/aws"
+   version = "0.0.3"
+
+   create_operator_roles = false
+   create_oidc_provider = false
+   create_account_roles = true
+
+   account_role_prefix = var.account_role_prefix
+   ocm_environment = var.ocm_environment
+}
+```
+
+### Sample Usage for operator IAM roles and OIDC provider
 
 ```
 data "ocm_rosa_operator_roles" "operator_roles" {
@@ -155,7 +175,12 @@ data "ocm_rosa_operator_roles" "operator_roles" {
 }
 
 module operator_roles {
-    source  = "git::https://github.com/terraform-redhat/terraform-aws-rosa-sts.git//modules/operator_roles"
+    source = "terraform-redhat/rosa-sts/aws"
+    version = "0.0.3"
+    
+    create_operator_roles = true
+    create_oidc_provider = true
+    create_account_roles = false
 
     cluster_id = ocm_cluster_rosa_classic.rosa_sts_cluster.id
     rh_oidc_provider_thumbprint = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
@@ -166,8 +191,9 @@ module operator_roles {
 
 ## The module uses the following resources
 * aws_iam_openid_connect_provider (resource)
+* aws_iam_policy (resource)
 * aws_iam_role (resource)
-* aws_iam_role_policy_attachment
+* aws_iam_role_policy_attachment (resource)
 * aws_caller_identity (data source)
 
 ## BYO OIDC options
