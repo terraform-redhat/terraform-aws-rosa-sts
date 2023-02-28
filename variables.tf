@@ -36,8 +36,26 @@ variable create_oidc_provider {
     default = true
 }
 
+variable create_account_roles {
+    description = "This attribute determines whether the module should create account roles or not"
+    type = bool
+    default = false
+}
+
 variable rh_oidc_provider_thumbprint {
     description = "Thumbprint for https://rh-oidc.s3.us-east-1.amazonaws.com"
     type = string
     default = "917e732d330f9a12404f73d8bea36948b929dffc"
 }
+
+variable account_role_prefix {
+    type = string
+    default = ""
+}
+
+variable rosa_openshift_version {
+    type = string
+    default = "4.12"
+}
+
+
