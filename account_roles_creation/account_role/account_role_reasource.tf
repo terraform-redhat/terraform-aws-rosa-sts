@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 # role
 resource "aws_iam_role" "account_role" {
   name = "${var.account_role_prefix}-${var.account_role_properties.role_name}-Role"
@@ -10,7 +8,7 @@ resource "aws_iam_role" "account_role" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.account_role_properties.principal}"
+          AWS = "arn:aws:iam::${var.account_id}:role/${var.account_role_properties.principal}"
         }
       },
     ]

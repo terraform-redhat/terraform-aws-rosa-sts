@@ -17,7 +17,6 @@ variable instance_account_role_properties {
     type = object({
             role_name = string
             role_type = string
-            principal = string
             policy_file_name = string
         })
 }
@@ -25,4 +24,7 @@ variable instance_account_role_properties {
 variable rosa_openshift_version {
     type = string
     default = "4.12"
+}
+variable account_id {
+    type = string
 }

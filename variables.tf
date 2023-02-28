@@ -25,19 +25,16 @@ variable operator_roles_properties {
 variable create_operator_roles {
     description = "When using BYO OIDC and reusing the operator roles set to false so as not to create operator roles"
     type = bool
-    default = false
 }
 
 variable create_oidc_provider {
     description = "When using BYO OIDC and reusing the OIDC provider set to false so as not to create identity provider"
     type = bool
-    default = false
 }
 
 variable create_account_roles {
     description = "This attribute determines whether the module should create account roles or not"
     type = bool
-    default = false
 }
 
 variable rh_oidc_provider_thumbprint {
@@ -55,5 +52,13 @@ variable rosa_openshift_version {
     type = string
     default = "4.12"
 }
+
+variable ocm_environment {
+    description = "The OCM environments should be one of those: production, staging, integration, local"
+    type = string
+    default = ""
+}
+
+
 
 
