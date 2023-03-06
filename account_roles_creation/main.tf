@@ -18,6 +18,15 @@ module rosa_account_roles {
     account_id = lookup({"production"="710019948333", "staging"="644306948063", "integration"="896164604406", "local"="765374464689"}, var.ocm_environment, "710019948333")
 }
 
+module rosa_operator_role_policies {
+    source = "./operator_role_policy"
+    count = 6
+
+    account_role_prefix = var.account_role_prefix
+    rosa_openshift_version = var.rosa_openshift_version
+    operator_role_policy_properties = local.operator_roles_policy_properties[count.index]
+}
+
 locals {
     account_roles_properties = [{
         # installer
@@ -45,5 +54,49 @@ locals {
        role_name = "ControlPlane"
        role_type = "controlplane"
        policy_file_name = "sts_instance_controlplane_permission_policy"
+    }]
+
+    # TODO: if there is a new policy for a new OCP versions, need to add it here also
+    operator_roles_policy_properties = [{
+        # openshift-machine-api
+        policy_name = substr("${var.account_role_prefix}-openshift-cloud-network-config-controller-cloud-credentials", 0, 64)
+        policy_file_name = "openshift_cloud_network_config_controller_cloud_credentials_policy"
+        namespace = "openshift-cloud-network-config-controller"
+        operator_name = "cloud-credentials"
+    },
+    {
+        # openshift-cloud-credential-operator
+        policy_name = substr("${var.account_role_prefix}-openshift-machine-api-aws-cloud-credentials", 0, 64)
+        policy_file_name = "openshift_machine_api_aws_cloud_credentials_policy"
+        namespace = "openshift-machine-api"
+        operator_name = "aws-cloud-credentials"
+    },
+    {
+        # openshift-cloud-network-config-controller
+        policy_name = substr("${var.account_role_prefix}-openshift-cloud-credential-operator-cloud-credential-operator-iam-ro-creds", 0, 64)
+        policy_file_name = "openshift_cloud_credential_operator_cloud_credential_operator_iam_ro_creds_policy"
+        namespace = "openshift-cloud-credential-operator"
+        operator_name = "cloud-credential-operator-iam-ro-creds"
+    },
+    {
+        # openshift-image-registry
+        policy_name = substr("${var.account_role_prefix}-openshift-image-registry-installer-cloud-credentials", 0, 64)
+        policy_file_name = "openshift_image_registry_installer_cloud_credentials_policy"
+        namespace = "openshift-image-registry"
+        operator_name = "installer-cloud-credentials"
+    },
+    {
+        # openshift-ingress-operator
+        policy_name = substr("${var.account_role_prefix}-openshift-ingress-operator-cloud-credentials", 0, 64)
+        policy_file_name = "openshift_ingress_operator_cloud_credentials_policy"
+        namespace = "openshift-ingress-operator"
+        operator_name = "cloud-credentials"
+    },
+    {
+        # openshift-cluster-csi-drivers
+        policy_name = substr("${var.account_role_prefix}-openshift-cluster-csi-drivers-ebs-cloud-credentials", 0, 64)
+        policy_file_name = "openshift_cluster_csi_drivers_ebs_cloud_credentials_policy"
+        namespace = "openshift-cluster-csi-drivers"
+        operator_name = "ebs-cloud-credentials"
     }]
 }
