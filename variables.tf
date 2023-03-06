@@ -24,6 +24,12 @@ variable operator_roles_properties {
     }
 }
 
+variable is_hosted_cp {
+    description = "Set to true if there is intention to use Red Hat Hosted CP to create appropriate opearator roles"
+    type = bool
+    default = false
+}
+
 variable create_operator_roles {
     description = "When using BYO OIDC and reusing the operator roles set to false so as not to create operator roles"
     type = bool

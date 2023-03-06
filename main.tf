@@ -9,7 +9,7 @@ terraform {
 
 module rosa_operator_roles {
     source = "./operator_roles"
-    count = var.create_operator_roles ? 6 : 0
+    count = var.create_operator_roles ? (var.is_hosted_cp ? 10 : 6) : 0
 
     cluster_id = var.cluster_id
     rh_oidc_provider_url = var.rh_oidc_provider_url
