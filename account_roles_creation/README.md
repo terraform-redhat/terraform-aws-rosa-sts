@@ -23,7 +23,7 @@ Terraform AWS ROSA STS
 ```
 module "create_account_roles"{
    source = "terraform-redhat/rosa-sts/aws"
-   version = "0.0.3"
+   version = "0.0.4"
 
    create_operator_roles = false
    create_oidc_provider = false

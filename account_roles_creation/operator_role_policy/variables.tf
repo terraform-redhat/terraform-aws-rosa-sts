@@ -6,7 +6,7 @@ variable operator_role_policy_properties {
     description = "Account IAM role properties"
     type = object({
             policy_name = string
-            policy_file_name = string
+            policy_details = string
             namespace = string
             operator_name = string
         })

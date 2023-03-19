@@ -8,7 +8,7 @@ variable account_role_properties {
             role_name = string
             role_type = string
             principal = string
-            policy_file_name = string
+            policy_details = string
         })
 }
 
@@ -17,7 +17,7 @@ variable instance_account_role_properties {
     type = object({
             role_name = string
             role_type = string
-            policy_file_name = string
+            policy_details = string
         })
 }
 

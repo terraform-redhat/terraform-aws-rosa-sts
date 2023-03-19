@@ -1,6 +1,6 @@
 resource "aws_iam_policy" "operator-policy" {
   name        = "${var.operator_role_policy_properties.policy_name}"
-  policy = "${file("${path.module}/policies_v_${var.rosa_openshift_version}/${var.operator_role_policy_properties.policy_file_name}.json")}"
+  policy = var.operator_role_policy_properties.policy_details
 
   tags = {
     rosa_openshift_version="${var.rosa_openshift_version}"
