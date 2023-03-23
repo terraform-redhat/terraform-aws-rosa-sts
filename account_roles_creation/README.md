@@ -10,11 +10,42 @@ Terraform AWS ROSA STS
 * provider AWS - to get account details 
 
 ## Inputs
-| Name | type        | Description                                                                                                                                        | Example            |
-|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
-|account_role_prefix| string      | Account roles prefix name                                                                                                                          | "TerraformAccount" |
-|rosa_openshift_version| string      | The openshift cluster version                                                                                                                      | "4.12"             |
-|ocm_environment| string      |  the OCM environments. The value should be one of those: production, staging, integration, local                                                                                                                                                  | "production"       |
+| Name | type        | Description                                                                                    | Example                                                                                                                                                                             |
+|------|-------------|------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|account_role_prefix| string      | Account roles prefix name                                                                      | "TerraformAccount"                                                                                                                                                                  |
+|rosa_openshift_version| string      | The openshift cluster version                                                                  | "4.12"                                                                                                                                                                              |
+|ocm_environment| string      | the OCM environments. The value should be one of those: production, staging, integration, local | "production"                                                                                                                                                                        |
+|account_role_policies| object      | account role policies details for account roles creation                                       | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
+|operator_role_policies| object      | operator role policies details for operator role policies creation                             | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#operator_role_policies-object) |
+
+### account_role_policies object
+`account_role_policies` is an object that holds the policy details for each account role. 
+This data can be extract by using the data source `ocm_policies` from terraform-provider-ocm
+The object looks like: 
+```
+{
+  "sts_installer_permission_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "sts_instance_controlplane_permission_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "sts_instance_worker_permission_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "sts_support_permission_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+}
+```
+
+### operator_role_policies object
+`operator_role_policies` is an object that holds the policy details for each operator role.
+The operator role policies are connected to a specific account role, so, they have been created as part of account roles creation.
+This data can be extract by using the data source `ocm_policies` from terraform-provider-ocm
+The object looks like:
+```
+{
+  "openshift_cloud_credential_operator_cloud_credential_operator_iam_ro_creds_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "openshift_cloud_network_config_controller_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "openshift_cluster_csi_drivers_ebs_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "openshift_image_registry_installer_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "openshift_ingress_operator_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+  "openshift_machine_api_aws_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+}
+```
 
 ## Usage
 
@@ -23,7 +54,7 @@ Terraform AWS ROSA STS
 ```
 module "create_account_roles"{
    source = "terraform-redhat/rosa-sts/aws"
-   version = "0.0.4"
+   version = ">=0.0.3"
 
    create_operator_roles = false
    create_oidc_provider = false
@@ -31,6 +62,9 @@ module "create_account_roles"{
 
    account_role_prefix = var.account_role_prefix
    ocm_environment = var.ocm_environment
+   rosa_openshift_version = var.rosa_openshift_version
+   account_role_policies = var.account_role_policies
+   operator_role_policies = var.operator_role_policies
 }
 ```
 

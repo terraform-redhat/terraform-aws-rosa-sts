@@ -33,7 +33,7 @@ variable account_role_policies {
 }
 
 variable operator_role_policies {
-  description = "operator role policies details for account roles creation"
+  description = "operator role policies details for operator roles creation"
   type =object({
     openshift_cloud_credential_operator_cloud_credential_operator_iam_ro_creds_policy = string
     openshift_cloud_network_config_controller_cloud_credentials_policy = string
