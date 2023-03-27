@@ -24,7 +24,7 @@ resource "aws_iam_role" "account_role" {
 # policy
 resource "aws_iam_policy" "account_role_policy" {
   name        = "${var.account_role_prefix}-${var.account_role_properties.role_name}-Role-Policy"
-  policy = "${file("${path.module}/policies_v_${var.rosa_openshift_version}/${var.account_role_properties.policy_file_name}.json")}"
+  policy = var.account_role_properties.policy_details
   tags = {
     rosa_openshift_version = var.rosa_openshift_version
     rosa_role_prefix = "${var.account_role_prefix}"

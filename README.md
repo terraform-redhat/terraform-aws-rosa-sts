@@ -34,6 +34,8 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 |account_role_prefix| string      | Account roles prefix name                                                                                                                          | "TerraformAccount" |
 |rosa_openshift_version| string      | The openshift cluster version                                                                                                                      | "4.12"             |
 |ocm_environment| string      |  the OCM environments. The value should be one of those: production, staging, integration, local                                                                                                                                                  | "production"       |
+|account_role_policies| object      | account role policies details for account roles creation                                       | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
+|operator_role_policies| object      | operator role policies details for operator role policies creation                             | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#operator_role_policies-object) |
 
 
 ## Get OCM Information for operator roles and OIDC provider
@@ -155,7 +157,7 @@ operator_iam_roles = [
 ```
 module "create_account_roles"{
    source = "terraform-redhat/rosa-sts/aws"
-   version = "0.0.3"
+   version = "0.0.4"
 
    create_operator_roles = false
    create_oidc_provider = false
@@ -163,6 +165,9 @@ module "create_account_roles"{
 
    account_role_prefix = var.account_role_prefix
    ocm_environment = var.ocm_environment
+   rosa_openshift_version = var.rosa_openshift_version
+   account_role_policies = var.account_role_policies
+   operator_role_policies = var.operator_role_policies
 }
 ```
 
@@ -176,7 +181,7 @@ data "ocm_rosa_operator_roles" "operator_roles" {
 
 module operator_roles {
     source = "terraform-redhat/rosa-sts/aws"
-    version = "0.0.3"
+    version = "0.0.4"
     
     create_operator_roles = true
     create_oidc_provider = true

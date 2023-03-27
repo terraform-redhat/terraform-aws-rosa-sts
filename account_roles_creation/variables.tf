@@ -22,4 +22,24 @@ variable ocm_environment {
      }
 }
 
+variable account_role_policies {
+  description = "account role policies details for account roles creation"
+  type =object({
+    sts_installer_permission_policy = string
+    sts_support_permission_policy = string
+    sts_instance_worker_permission_policy = string
+    sts_instance_controlplane_permission_policy = string
+  })
+}
 
+variable operator_role_policies {
+  description = "operator role policies details for operator roles creation"
+  type =object({
+    openshift_cloud_credential_operator_cloud_credential_operator_iam_ro_creds_policy = string
+    openshift_cloud_network_config_controller_cloud_credentials_policy = string
+    openshift_cluster_csi_drivers_ebs_cloud_credentials_policy = string
+    openshift_image_registry_installer_cloud_credentials_policy = string
+    openshift_ingress_operator_cloud_credentials_policy = string
+    openshift_machine_api_aws_cloud_credentials_policy = string
+  })
+}

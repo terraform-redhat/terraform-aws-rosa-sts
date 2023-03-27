@@ -32,4 +32,6 @@ module rosa_account_roles {
     account_role_prefix = var.account_role_prefix
     rosa_openshift_version = var.rosa_openshift_version
     ocm_environment = var.ocm_environment
+    account_role_policies = var.account_role_policies
+    operator_role_policies = var.operator_role_policies
 }
