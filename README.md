@@ -201,9 +201,9 @@ module operator_roles {
 * aws_iam_role_policy_attachment (resource)
 * aws_caller_identity (data source)
 
-## BYO OIDC options
+## OIDC Configuration options
 
-For BYO OIDC the client has extra configurations in the form of boolean attributes that indicate if creating the operator roles or OIDC provider is needed, the attributes are:
+For Red Hat Managed or Customer Managed the client has extra configurations in the form of boolean attributes that indicate if creating the operator roles or OIDC provider is needed, the attributes are:
 
 * create_operator_roles
 * create_oidc_provider
