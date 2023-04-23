@@ -25,17 +25,27 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 * provider OCM - to get cluster operator role properties, and information to create OIDC provider. 
 
 ## Inputs
-| Name | type        | Description                                                                                                                                        | Example                                                                                                   |
-|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-|cluster_id| string      | Cluster ID                                                                                                                                         | "11111111111111111111111111111111"                                                                        |
-|rh_oidc_provider_url| string      | OIDC provider url                                                                                                                                  | "rh-oidc-staging.s3.us-east-1.amazonaws.com/11111111111111111111111111111111"                             |
-|rh_oidc_provider_thumbprint| string      | Thumbprint for https://rh-oidc.s3.us-east-1.amazonaws.com                                                                                          | "2222222222222222222222222222222222222222"                                                                |
-|operator_roles_properties| list of map | List of 6 items of ROSA Operator IAM Roles. Each item should contains: role_name, policy_name, service_accounts, operator_name, operator_namespace | can be found [below](https://github.com/terraform-redhat/terraform-aws-rosa-sts#get-clusters-information) |
-|account_role_prefix| string      | Account roles prefix name                                                                                                                          | "TerraformAccount" |
-|rosa_openshift_version| string      | The openshift cluster version                                                                                                                      | "4.12"             |
-|ocm_environment| string      |  the OCM environments. The value should be one of those: production, staging, integration, local                                                                                                                                                  | "production"       |
-|account_role_policies| object      | account role policies details for account roles creation                                       | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
-|operator_role_policies| object      | operator role policies details for operator role policies creation                             | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#operator_role_policies-object) |
+| Name | type        | Description                                                                                                                                        | Example                                                                                                                                                                                    |
+|------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|cluster_id| string      | Cluster ID                                                                                                                                         | "11111111111111111111111111111111"                                                                                                                                                         |
+|rh_oidc_provider_url| string      | OIDC provider url                                                                                                                                  | "rh-oidc-staging.s3.us-east-1.amazonaws.com/11111111111111111111111111111111"                                                                                                              |
+|operator_roles_properties| list of map | List of 6 items of ROSA Operator IAM Roles. Each item should contains: role_name, policy_name, service_accounts, operator_name, operator_namespace | can be found [below](https://github.com/terraform-redhat/terraform-aws-rosa-sts#get-clusters-information)                                                                                  |
+|create_operator_roles| bool        | Indicates if operator roles creation is needed                                                                                                     | true)                                                                                                                                                                                      |
+|create_oidc_provider| bool        | Indicates if oidc provider creation is needed                                                                                                      | true)                                                                                                                                                                                      |
+|create_account_roles| bool        | Indicates if account roles creation is needed                                                                                                      | true)                                                                                                                                                                                      |
+|rh_oidc_provider_thumbprint| string      | Thumbprint for https://rh-oidc.s3.us-east-1.amazonaws.com                                                                                          | "2222222222222222222222222222222222222222"                                                                                                                                                 |
+|account_role_prefix| string      | Account roles prefix name                                                                                                                          | "TerraformAccount"                                                                                                                                                                         |
+|rosa_openshift_version| string      | The openshift cluster version                                                                                                                      | "4.12"                                                                                                                                                                                     |
+|ocm_environment| string      | the OCM environments. The value should be one of those: production, staging, integration, local                                                    | "production"                                                                                                                                                                               |
+|account_role_policies| object      | account role policies details for account roles creation                                                                                           | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
+|operator_role_policies| object      | operator role policies details for operator role policies creation                                                                                 | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#operator_role_policies-object) |
+|create_oidc_config_resources| string      | The S3 bucket name                                                                                                                                 | "oidc-f3y4"                                                                                                                                                                                |
+|bucket_name| string      | The S3 bucket name                                                                                                                                 | "oidc-f3y4"                                                                                                                                                                                |
+|discovery_doc| string      | The discovery document string file                                                                                                                 |                                                                                                                                                                                            |
+|jwks| string      | Json web key set string file                                                                                                                       |                                                                                                                                                                                            |
+|private_key| string      | RSA private key                                                                                                                                    |                                                                                                                                                                                            |
+|private_key_file_name| string      | The private key file name                                                                                                                          | "rosa-private-key-oidc-f3y4.key"                                                                                                                                                           |
+|private_key_secret_name| string      | The secret name that store the private key                                                                                                         | "rosa-private-key-oidc-f3y4"                                                                                                                                                               |
 
 
 ## Get OCM Information for operator roles and OIDC provider
@@ -157,10 +167,8 @@ operator_iam_roles = [
 ```
 module "create_account_roles"{
    source = "terraform-redhat/rosa-sts/aws"
-   version = "0.0.4"
+   version = "0.0.5"
 
-   create_operator_roles = false
-   create_oidc_provider = false
    create_account_roles = true
 
    account_role_prefix = var.account_role_prefix
@@ -181,16 +189,33 @@ data "ocm_rosa_operator_roles" "operator_roles" {
 
 module operator_roles {
     source = "terraform-redhat/rosa-sts/aws"
-    version = "0.0.4"
+    version = "0.0.5"
     
     create_operator_roles = true
     create_oidc_provider = true
-    create_account_roles = false
 
     cluster_id = ocm_cluster_rosa_classic.rosa_sts_cluster.id
     rh_oidc_provider_thumbprint = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
     rh_oidc_provider_url = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
     operator_roles_properties = data.ocm_rosa_operator_roles.operator_roles.operator_iam_roles
+}
+```
+
+### Sample Usage for OIDC config resources
+
+```
+module operator_roles {
+    source = "terraform-redhat/rosa-sts/aws"
+    version = "0.0.5"
+
+   create_oidc_config_resources = true
+
+  bucket_name = var.bucket_name
+  discovery_doc = var.discovery_doc
+  jwks = var.jwks
+  private_key = var.private_key
+  private_key_file_name = var.private_key_file_name
+  private_key_secret_name = var.private_key_secret_name
 }
 ```
 
@@ -200,6 +225,13 @@ module operator_roles {
 * aws_iam_role (resource)
 * aws_iam_role_policy_attachment (resource)
 * aws_caller_identity (data source)
+* aws_s3_bucket (resource)
+* aws_s3_bucket_public_access_block (resource)
+* aws_s3_bucket_policy (resource)
+* aws_iam_policy_document (resource)
+* aws_secretsmanager_secret (resource)
+* aws_secretsmanager_secret_version (resource)
+* aws_s3_object (resource)
 
 ## BYO OIDC options
 
