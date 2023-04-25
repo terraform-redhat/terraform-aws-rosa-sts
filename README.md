@@ -30,6 +30,7 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 |cluster_id| string      | Cluster ID                                                                                                                                         | "11111111111111111111111111111111"                                                                                                                                                         |
 |permissions_boundary| string      | The ARN of the policy that is used to set the permissions boundary for the IAM roles in STS clusters. | "arn:aws:iam::123456789012:policy/RoleBoundaries"                                                                                                                                                                        |
 |rh_oidc_provider_url| string      | OIDC provider url                                                                                                                                  | "rh-oidc-staging.s3.us-east-1.amazonaws.com/11111111111111111111111111111111"                                                                                                              |
+|tags | map of strings |List of AWS resource tags to apply | [an example can be found below](#tags-object) |
 |operator_roles_properties| list of map | List of 6 items of ROSA Operator IAM Roles. Each item should contains: role_name, policy_name, service_accounts, operator_name, operator_namespace | can be found [below](https://github.com/terraform-redhat/terraform-aws-rosa-sts#get-clusters-information)                                                                                  |
 |create_operator_roles| bool        | Indicates if operator roles creation is needed                                                                                                     | true)                                                                                                                                                                                      |
 |create_oidc_provider| bool        | Indicates if oidc provider creation is needed                                                                                                      | true)                                                                                                                                                                                      |
@@ -48,6 +49,17 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 |private_key_file_name| string      | The private key file name                                                                                                                          | "rosa-private-key-oidc-f3y4.key"                                                                                                                                                           |
 |private_key_secret_name| string      | The secret name that store the private key                                                                                                         | "rosa-private-key-oidc-f3y4"                                                                                                                                                               |
 
+### tags object
+`tags` is a map of strings with resource tags to be applied to AWS resources created.
+The map looks like:
+```
+{
+  contact     = "xyz@company.com"
+  cost-center = "12345"
+  owner       = "productteam"
+  environment = "test"
+}
+```
 
 ## Get OCM Information for operator roles and OIDC provider
 
@@ -177,6 +189,14 @@ module "create_account_roles"{
    rosa_openshift_version = var.rosa_openshift_version
    account_role_policies = var.account_role_policies
    operator_role_policies = var.operator_role_policies
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 ```
 
@@ -199,6 +219,14 @@ module operator_roles {
     rh_oidc_provider_thumbprint = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
     rh_oidc_provider_url = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
     operator_roles_properties = data.ocm_rosa_operator_roles.operator_roles.operator_iam_roles
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 ```
 
