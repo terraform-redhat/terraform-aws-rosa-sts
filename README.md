@@ -36,7 +36,7 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 |ocm_environment| string      |  the OCM environments. The value should be one of those: production, staging, integration, local                                                                                                                                                  | "production"       |
 |account_role_policies| object      | account role policies details for account roles creation                                       | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
 |operator_role_policies| object      | operator role policies details for operator role policies creation                             | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#operator_role_policies-object) |
-
+|tags | map of strings |List of aws resource tags to apply | [an example can be found in examples folder](https://github.com/StateFarmIns/terraform-aws-rosa-sts/blob/main/examples/operator_roles_and_oidc/variables.tf#L32-41)
 
 ## Get OCM Information for operator roles and OIDC provider
 

@@ -15,22 +15,22 @@ resource "aws_iam_role" "instance_account_role" {
     ]
   })
 
-  tags = {
+  tags = merge(var.tags, {
     rosa_openshift_version = var.rosa_openshift_version
-    rosa_role_prefix = "${var.account_role_prefix}"
-    rosa_role_type = "instance_${var.instance_account_role_properties.role_type}"
-  }
+    rosa_role_prefix       = "${var.account_role_prefix}"
+    rosa_role_type         = "instance_${var.instance_account_role_properties.role_type}"
+  })
 }
 
 # policy
 resource "aws_iam_policy" "instance_account_role_policy" {
-  name        = "${var.account_role_prefix}-${var.instance_account_role_properties.role_name}-Role-Policy"
+  name   = "${var.account_role_prefix}-${var.instance_account_role_properties.role_name}-Role-Policy"
   policy = var.instance_account_role_properties.policy_details
-  tags = {
+  tags = merge(var.tags, {
     rosa_openshift_version = var.rosa_openshift_version
-    rosa_role_prefix = "${var.account_role_prefix}"
-    rosa_role_type = "instance_${var.instance_account_role_properties.role_type}"
-  }
+    rosa_role_prefix       = "${var.account_role_prefix}"
+    rosa_role_type         = "instance_${var.instance_account_role_properties.role_type}"
+  })
 }
 
 
