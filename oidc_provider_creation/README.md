@@ -55,6 +55,14 @@ module operator_roles {
     cluster_id = var.cluster_id
     rh_oidc_provider_thumbprint = var.oidc_thumbprint
     rh_oidc_provider_url = var.oidc_endpoint_url
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 
 ```

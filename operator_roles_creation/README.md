@@ -60,6 +60,14 @@ module operator_roles {
     cluster_id = ocm_cluster_rosa_classic.rosa_sts_cluster.id
     rh_oidc_provider_url = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
     operator_roles_properties = data.ocm_rosa_operator_roles.operator_roles.operator_iam_roles
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 ```
 

@@ -59,17 +59,6 @@ The object looks like:
   "openshift_machine_api_aws_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
 }
 ```
-### tags object
-`tags` is a map of strings with resource tags to be applied to AWS resources created.
-The map looks like:
-```
-{
-  contact     = "xyz@company.com"
-  cost-center = "12345"
-  owner       = "productteam"
-  environment = "test"
-}
-```
 
 ## Usage
 
@@ -77,18 +66,26 @@ The map looks like:
 
 ```
 module "create_account_roles"{
-   source = "terraform-redhat/rosa-sts/aws"
-   version = ">=0.0.3"
+  source = "terraform-redhat/rosa-sts/aws"
+  version = ">=0.0.3"
 
-   create_operator_roles = false
-   create_oidc_provider = false
-   create_account_roles = true
+  create_operator_roles = false
+  create_oidc_provider = false
+  create_account_roles = true
 
-   account_role_prefix = var.account_role_prefix
-   ocm_environment = var.ocm_environment
-   rosa_openshift_version = var.rosa_openshift_version
-   account_role_policies = var.account_role_policies
-   operator_role_policies = var.operator_role_policies
+  account_role_prefix = var.account_role_prefix
+  ocm_environment = var.ocm_environment
+  rosa_openshift_version = var.rosa_openshift_version
+  account_role_policies = var.account_role_policies
+  operator_role_policies = var.operator_role_policies
+
+  #optional
+  tags                = {
+    contact     = "xyz@company.com"
+    cost-center = "12345"
+    owner       = "productteam"
+    environment = "test"
+  }
 }
 ```
 
