@@ -8,7 +8,7 @@ variable "ocm_environment" {
 }
 
 variable "tags" {
-  description = "(optional) List of aws resource tags to apply."
+  description = "(optional) List of AWS resource tags to apply."
   type        = map(string)
   default = {
     contact     = "xyz@company.com"

@@ -17,6 +17,19 @@ Terraform AWS ROSA STS
 |ocm_environment| string      | the OCM environments. The value should be one of those: production, staging, integration, local | "production"                                                                                                                                                                        |
 |account_role_policies| object      | account role policies details for account roles creation                                       | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
 |operator_role_policies| object      | operator role policies details for operator role policies creation                             | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#operator_role_policies-object) |
+|tags | map of strings | List of AWS resource tags to apply | [an example can be found below](#tags-object) |
+
+### tags object
+`tags` is a map of strings with resource tags to be applied to AWS resources created.
+The map looks like:
+```
+{
+  contact     = "xyz@company.com"
+  cost-center = "12345"
+  owner       = "productteam"
+  environment = "test"
+}
+```
 
 ### account_role_policies object
 `account_role_policies` is an object that holds the policy details for each account role. 
@@ -44,6 +57,17 @@ The object looks like:
   "openshift_image_registry_installer_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
   "openshift_ingress_operator_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
   "openshift_machine_api_aws_cloud_credentials_policy" = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\",\"Action\": [], \"Resource\": \"*\"}]}"
+}
+```
+### tags object
+`tags` is a map of strings with resource tags to be applied to AWS resources created.
+The map looks like:
+```
+{
+  contact     = "xyz@company.com"
+  cost-center = "12345"
+  owner       = "productteam"
+  environment = "test"
 }
 ```
 

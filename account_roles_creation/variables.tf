@@ -45,7 +45,7 @@ variable "operator_role_policies" {
 }
 
 variable "tags" {
-  description = "List of aws resource tags to apply."
+  description = "List of AWS resource tags to apply."
   type        = map(string)
   default     = null
 }

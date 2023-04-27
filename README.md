@@ -36,7 +36,19 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 |ocm_environment| string      |  the OCM environments. The value should be one of those: production, staging, integration, local                                                                                                                                                  | "production"       |
 |account_role_policies| object      | account role policies details for account roles creation                                       | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
 |operator_role_policies| object      | operator role policies details for operator role policies creation                             | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#operator_role_policies-object) |
-|tags | map of strings |List of aws resource tags to apply | [an example can be found in examples folder](https://github.com/StateFarmIns/terraform-aws-rosa-sts/blob/main/examples/operator_roles_and_oidc/variables.tf#L32-41)
+|tags | map of strings |List of AWS resource tags to apply | [an example can be found below](#tags-object) |
+
+### tags object
+`tags` is a map of strings with resource tags to be applied to AWS resources created.
+The map looks like:
+```
+{
+  contact     = "xyz@company.com"
+  cost-center = "12345"
+  owner       = "productteam"
+  environment = "test"
+}
+```
 
 ## Get OCM Information for operator roles and OIDC provider
 
@@ -168,6 +180,14 @@ module "create_account_roles"{
    rosa_openshift_version = var.rosa_openshift_version
    account_role_policies = var.account_role_policies
    operator_role_policies = var.operator_role_policies
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 ```
 
@@ -191,6 +211,14 @@ module operator_roles {
     rh_oidc_provider_thumbprint = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
     rh_oidc_provider_url = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
     operator_roles_properties = data.ocm_rosa_operator_roles.operator_roles.operator_iam_roles
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 ```
 
