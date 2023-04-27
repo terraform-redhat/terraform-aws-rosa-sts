@@ -18,6 +18,19 @@ Terraform AWS ROSA STS
 |cluster_id| string      | Cluster ID                                                                                                                                         | "11111111111111111111111111111111"                                                                        |
 |rh_oidc_provider_url| string      | OIDC provider url                                                                                                                                  | "rh-oidc-staging.s3.us-east-1.amazonaws.com/11111111111111111111111111111111"                             |
 |operator_roles_properties| list of map | List of 6 items of ROSA Operator IAM Roles. Each item should contains: role_name, policy_name, service_accounts, operator_name, operator_namespace | can be found [below](https://github.com/terraform-redhat/terraform-aws-rosa-sts#get-clusters-information) |
+|tags | map of strings |List of AWS resource tags to apply | [an example can be found below](#tags-object) |
+
+### tags object
+`tags` is a map of strings with resource tags to be applied to AWS resources created.
+The map looks like:
+```
+{
+  contact     = "xyz@company.com"
+  cost-center = "12345"
+  owner       = "productteam"
+  environment = "test"
+}
+```
 
 ## Get OCM Information
 
@@ -47,6 +60,14 @@ module operator_roles {
     cluster_id = ocm_cluster_rosa_classic.rosa_sts_cluster.id
     rh_oidc_provider_url = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
     operator_roles_properties = data.ocm_rosa_operator_roles.operator_roles.operator_iam_roles
+
+    #optional
+    tags                = {
+      contact     = "xyz@company.com"
+      cost-center = "12345"
+      owner       = "productteam"
+      environment = "test"
+    }
 }
 ```
 
