@@ -23,12 +23,12 @@ variable operator_roles_properties {
 }
 
 variable create_operator_roles {
-    description = "When using BYO OIDC and reusing the operator roles set to false so as not to create operator roles"
+    description = "When using OIDC Config ID and reusing the operator roles set to false so as not to create operator roles"
     type = bool
 }
 
 variable create_oidc_provider {
-    description = "When using BYO OIDC and reusing the OIDC provider set to false so as not to create identity provider"
+    description = "When using OIDC Config ID and reusing the OIDC provider set to false so as not to create identity provider"
     type = bool
 }
 

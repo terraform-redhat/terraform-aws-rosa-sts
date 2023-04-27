@@ -49,9 +49,9 @@ module operator_roles {
 ## The module uses the following resources
 * aws_iam_openid_connect_provider
 
-## BYO OIDC options
+## OIDC Configuration options
 
-For BYO OIDC the client has extra configurations in the form of boolean attributes that indicate if creating the operator roles or OIDC provider is needed, the attributes are:
+For Red Hat Managed or Customer Managed the client has extra configurations in the form of boolean attributes that indicate if creating the operator roles or OIDC provider is needed, the attributes are:
 
 * create_operator_roles
 * create_oidc_provider
