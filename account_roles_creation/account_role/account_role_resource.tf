@@ -15,6 +15,7 @@ resource "aws_iam_role" "account_role" {
   })
 
   tags = {
+    red-hat-managed = true
     rosa_openshift_version = var.rosa_openshift_version
     rosa_role_prefix = "${var.account_role_prefix}"
     rosa_role_type = "${var.account_role_properties.role_type}"
