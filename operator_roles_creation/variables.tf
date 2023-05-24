@@ -23,3 +23,9 @@ variable operator_roles_properties {
       error_message = "The list of operator roles should contains 6 elements."
     }
 }
+
+variable permissions_boundary {
+    description = "The ARN of the policy that is used to set the permissions boundary for the IAM roles in STS clusters."
+    type = string
+    default = ""
+}

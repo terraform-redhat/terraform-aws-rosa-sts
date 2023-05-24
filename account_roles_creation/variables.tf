@@ -43,3 +43,9 @@ variable operator_role_policies {
     openshift_machine_api_aws_cloud_credentials_policy = string
   })
 }
+
+variable permissions_boundary {
+  description = "The ARN of the policy that is used to set the permissions boundary for the IAM roles in STS clusters."
+  type = string
+  default = ""
+}
