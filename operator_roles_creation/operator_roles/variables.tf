@@ -9,6 +9,12 @@ variable rh_oidc_provider_url {
     default = "rh-oidc.s3.us-east-1.amazonaws.com"
 }
 
+variable permissions_boundary {
+    description = "The ARN of the policy that is used to set the permissions boundary for the IAM roles in STS clusters."
+    type = string
+    default = ""
+}
+
 variable operator_role_properties {
     description = ""
     type = object({

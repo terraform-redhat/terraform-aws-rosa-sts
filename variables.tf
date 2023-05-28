@@ -4,6 +4,11 @@ variable cluster_id {
     default = ""
 }
 
+variable permissions_boundary {
+    description = "The ARN of the policy that is used to set the permissions boundary for the IAM roles in STS clusters."
+    type = string
+    default = ""
+}
 
 # ******************* operator roles variables
 variable rh_oidc_provider_url {

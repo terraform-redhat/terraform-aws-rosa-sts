@@ -16,6 +16,7 @@ module rosa_account_roles {
     account_role_properties = local.account_roles_properties[count.index]
     instance_account_role_properties = local.instance_account_roles_properties[count.index]
     account_id = lookup({"production"="710019948333", "staging"="644306948063", "integration"="896164604406", "local"="765374464689"}, var.ocm_environment, "710019948333")
+    permissions_boundary = var.permissions_boundary
 }
 
 module rosa_operator_role_policies {
