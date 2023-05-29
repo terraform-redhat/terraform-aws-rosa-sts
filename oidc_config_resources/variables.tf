@@ -27,3 +27,9 @@ variable private_key_secret_name {
     description = "The secret name that store the private key"
     type = string
 }
+
+variable "tags" {
+    description = "List of AWS resource tags to apply."
+    type        = map(string)
+    default     = null
+}

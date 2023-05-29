@@ -10,6 +10,12 @@ variable "permissions_boundary" {
     default = ""
 }
 
+variable "tags" {
+  description = "List of AWS resource tags to apply."
+  type        = map(string)
+  default     = null
+}
+
 # ******************* operator roles variables
 variable "rh_oidc_provider_url" {
   description = "oidc provider url"
@@ -94,11 +100,6 @@ variable "operator_role_policies" {
   default = null
 }
 
-variable "tags" {
-  description = "List of AWS resource tags to apply."
-  type        = map(string)
-  default     = null
-}
 # ******************* OIDC config resources
 variable create_oidc_config_resources {
     description = "This attribute determines whether the module should create OIDC config resources"
