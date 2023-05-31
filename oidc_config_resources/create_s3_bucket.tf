@@ -2,9 +2,9 @@
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = var.bucket_name
 
-  tags = {
+  tags = merge(var.tags, {
     red-hat-managed = true
-  }
+  })
 }
 
 # PutPublicAccessBlock
@@ -29,14 +29,14 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
       identifiers = ["*"]
       type        = "*"
     }
-    sid = "AllowReadPublicAccess"
-    effect = "Allow"
+    sid     = "AllowReadPublicAccess"
+    effect  = "Allow"
     actions = [
       "s3:GetObject",
     ]
 
     resources = [
-      format("arn:aws:s3:::%s/*",aws_s3_bucket.s3_bucket.bucket),
+      format("arn:aws:s3:::%s/*", aws_s3_bucket.s3_bucket.bucket),
     ]
   }
 }

@@ -18,6 +18,19 @@ Terraform AWS ROSA STS
 |private_key| string      | RSA private key                                                                                          |                                    |
 |private_key_file_name| string      | The private key file name                                                                                          | "rosa-private-key-oidc-f3y4.key"                                  |
 |private_key_secret_name| string      | The secret name that store the private key                                                                                          | "rosa-private-key-oidc-f3y4"                                  |
+|tags | map of strings | List of AWS resource tags to apply | [an example can be found below](#tags-object) |
+
+### tags object
+`tags` is a map of strings with resource tags to be applied to AWS resources created.
+The map looks like:
+```
+{
+  contact     = "xyz@company.com"
+  cost-center = "12345"
+  owner       = "productteam"
+  environment = "test"
+}
+```
 
 ## Usage
 
