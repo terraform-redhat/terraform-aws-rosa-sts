@@ -41,7 +41,7 @@ module "rosa_account_roles" {
   tags                   = var.tags
 }
 
-module rosa_oidc_config_resources {
+module "rosa_oidc_config_resources" {
   source = "./oidc_config_resources"
   count  = var.create_oidc_config_resources ? 1 : 0
 

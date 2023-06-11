@@ -1,7 +1,7 @@
 # for worker and control plan instances
 # role
 resource "aws_iam_role" "instance_account_role" {
-  name = "${var.account_role_prefix}-${var.instance_account_role_properties.role_name}-Role"
+  name                 = "${var.account_role_prefix}-${var.instance_account_role_properties.role_name}-Role"
   permissions_boundary = var.permissions_boundary
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
