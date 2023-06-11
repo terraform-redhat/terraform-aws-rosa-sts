@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "operator_role" {
-  name = var.operator_role_properties.role_name
+  name                 = var.operator_role_properties.role_name
   permissions_boundary = var.permissions_boundary
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
