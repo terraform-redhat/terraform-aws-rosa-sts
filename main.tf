@@ -39,6 +39,7 @@ module "rosa_account_roles" {
   operator_role_policies = var.operator_role_policies
   permissions_boundary   = var.permissions_boundary
   tags                   = var.tags
+  account_role_path      = var.account_role_path
 }
 
 module "rosa_oidc_config_resources" {

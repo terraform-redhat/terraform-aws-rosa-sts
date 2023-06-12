@@ -142,3 +142,9 @@ variable "private_key_secret_name" {
   type        = string
   default     = ""
 }
+
+variable "account_role_path" {
+  description = "(Optional) Path to the account role."
+  type        = string
+  default     = null
+}

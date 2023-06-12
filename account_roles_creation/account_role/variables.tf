@@ -41,3 +41,9 @@ variable "permissions_boundary" {
   type        = string
   default     = ""
 }
+
+variable "path" {
+  description = "(Optional) Path to the account role."
+  type        = string
+  default     = null
+}

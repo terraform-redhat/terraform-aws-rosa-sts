@@ -55,3 +55,9 @@ variable "tags" {
   type        = map(string)
   default     = null
 }
+
+variable "account_role_path" {
+  description = "(Optional) Path to the account role."
+  type        = string
+  default     = null
+}

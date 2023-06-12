@@ -13,6 +13,7 @@ Terraform AWS ROSA STS
 | Name | type        | Description                                                                                    | Example                                                                                                                                                                            |
 |------|-------------|------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |account_role_prefix| string      | Account roles prefix name                                                                      | "TerraformAccount"                                                                                                                                                                 |
+|account_role_path| string      | Account roles path (optional)                                                                                                                          | "TerraformAccount"                                                                                                                                                                         |
 |rosa_openshift_version| string      | The openshift cluster version                                                                  | "4.12"                                                                                                                                                                             |
 |ocm_environment| string      | the OCM environments. The value should be one of those: production, staging, integration, local | "production"                                                                                                                                                                       |
 |permissions_boundary| string      | The ARN of the policy that is used to set the permissions boundary for the account roles in STS clusters. | "arn:aws:iam::123456789012:policy/XCompanyBoundaries"                                                                                                                                                                        |
@@ -75,6 +76,7 @@ module "create_account_roles"{
   create_account_roles = true
 
   account_role_prefix = var.account_role_prefix
+  account_role_path = var.account_role_path
   ocm_environment = var.ocm_environment
   rosa_openshift_version = var.rosa_openshift_version
   account_role_policies = var.account_role_policies
