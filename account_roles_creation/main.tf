@@ -18,6 +18,7 @@ module "rosa_account_roles" {
   account_id                       = lookup({ "production" = "710019948333", "staging" = "644306948063", "integration" = "896164604406", "local" = "765374464689" }, var.ocm_environment, "710019948333")
   permissions_boundary             = var.permissions_boundary
   tags                             = var.tags
+  path                             = var.account_role_path
 }
 
 module "rosa_operator_role_policies" {
