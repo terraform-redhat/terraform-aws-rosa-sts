@@ -37,7 +37,7 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 |create_account_roles| bool        | Indicates if account roles creation is needed                                                                                                      | true)                                                                                                                                                                                      |
 |rh_oidc_provider_thumbprint| string      | Thumbprint for https://rh-oidc.s3.us-east-1.amazonaws.com                                                                                          | "2222222222222222222222222222222222222222"                                                                                                                                                 |
 |account_role_prefix| string      | Account roles prefix name                                                                                                                          | "TerraformAccount"                                                                                                                                                                         |
-|account_role_path| string      | Account roles path (optional)                                                                                                                          | "TerraformAccount"                                                                                                                                                                         |
+|path| string      | The arn path for the account/operator roles as well as their policies (optional)                                                                                                                          | "TerraformAccount"                                                                                                                                                                         |
 |rosa_openshift_version| string      | The openshift cluster version                                                                                                                      | "4.12"                                                                                                                                                                                     |
 |ocm_environment| string      | the OCM environments. The value should be one of those: production, staging, integration, local                                                    | "production"                                                                                                                                                                               |
 |account_role_policies| object      | account role policies details for account roles creation                                                                                           | [an example can be found below](https://github.com/terraform-redhat/terraform-aws-rosa-sts/tree/use_data_source_for_account_policies/account_roles_creation#account_role_policies-object)  |
@@ -186,7 +186,7 @@ module "create_account_roles"{
    create_account_roles = true
 
    account_role_prefix = var.account_role_prefix
-   account_role_path = var.account_role_path
+   path = var.path
    ocm_environment = var.ocm_environment
    rosa_openshift_version = var.rosa_openshift_version
    account_role_policies = var.account_role_policies
