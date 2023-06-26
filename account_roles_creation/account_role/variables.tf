@@ -43,7 +43,7 @@ variable "permissions_boundary" {
 }
 
 variable "path" {
-  description = "(Optional) Path to the account role."
+  description = "(Optional) The arn path for the account/operator roles as well as their policies."
   type        = string
   default     = null
 }

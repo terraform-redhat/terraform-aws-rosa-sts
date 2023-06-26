@@ -16,4 +16,5 @@ module "rosa_operator_roles" {
   operator_role_properties = var.operator_roles_properties[count.index]
   permissions_boundary     = var.permissions_boundary
   tags                     = var.tags
+  path                     = var.path
 }
