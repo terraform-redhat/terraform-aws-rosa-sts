@@ -22,7 +22,7 @@ This terraform module tries to replicate rosa CLI roles creation so that:
 * ROSA STS cluster
 * terraform cli
 * provider AWS - to get account details
-* provider OCM - to get cluster operator role properties, and information to create OIDC provider. 
+* provider [RHCS](https://github.com/terraform-redhat/terraform-provider-rhcs) - to get cluster operator role properties, and information to create OIDC provider. 
 
 ## Inputs
 | Name | type        | Description                                                                                                                                        | Example                                                                                                                                                                                    |
@@ -71,7 +71,7 @@ When creating operator IAM roles and OIDC provider, the requirements are:
 * thumbprint
 
 
-The information can be retrieved by using the [OCM provider](https://registry.terraform.io/providers/terraform-redhat/ocm/latest) 
+The information can be retrieved by using the [Red Hat Cloud Services Provider](https://registry.terraform.io/providers/terraform-redhat/rhcs/latest) 
 
 ## Get Clusters Information.
 
@@ -205,7 +205,7 @@ module "create_account_roles"{
 ### Sample Usage for operator IAM roles and OIDC provider
 
 ```
-data "ocm_rosa_operator_roles" "operator_roles" {
+data "rhcs_rosa_operator_roles" "operator_roles" {
   operator_role_prefix = var.operator_role_prefix
   account_role_prefix = var.account_role_prefix
 }
@@ -217,10 +217,10 @@ module operator_roles {
     create_operator_roles = true
     create_oidc_provider = true
 
-    cluster_id = ocm_cluster_rosa_classic.rosa_sts_cluster.id
-    rh_oidc_provider_thumbprint = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
-    rh_oidc_provider_url = ocm_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
-    operator_roles_properties = data.ocm_rosa_operator_roles.operator_roles.operator_iam_roles
+    cluster_id = rhcs_cluster_rosa_classic.rosa_sts_cluster.id
+    rh_oidc_provider_thumbprint = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.thumbprint
+    rh_oidc_provider_url = rhcs_cluster_rosa_classic.rosa_sts_cluster.sts.oidc_endpoint_url
+    operator_roles_properties = data.rhcs_rosa_operator_roles.operator_roles.operator_iam_roles
 
     #optional
     tags                = {

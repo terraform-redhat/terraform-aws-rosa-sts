@@ -4,9 +4,9 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.20.0"
     }
-    ocm = {
-      version = "0.0.2"
-      source  = "terraform-redhat/ocm"
+    rhcs = {
+      version = ">= 1.0.0"
+      source  = "terraform-redhat/rhcs"
     }
   }
 }
@@ -16,7 +16,7 @@ provider "ocm" {
   url   = var.url
 }
 
-data "ocm_rosa_operator_roles" "operator_roles" {
+data "rhcs_rosa_operator_roles" "operator_roles" {
   operator_role_prefix = var.operator_role_prefix
   account_role_prefix  = var.account_role_prefix
 }
@@ -32,6 +32,6 @@ module "operator_roles" {
   cluster_id                  = var.cluster_id
   rh_oidc_provider_thumbprint = var.oidc_thumbprint
   rh_oidc_provider_url        = var.oidc_endpoint_url
-  operator_roles_properties   = data.ocm_rosa_operator_roles.operator_roles.operator_iam_roles
+  operator_roles_properties   = data.rhcs_rosa_operator_roles.operator_roles.operator_iam_roles
   tags                        = var.tags
 }
