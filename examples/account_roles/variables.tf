@@ -1,5 +1,6 @@
 variable "account_role_prefix" {
   type = string
+  default = ""
 }
 
 variable "ocm_environment" {
