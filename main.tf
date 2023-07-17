@@ -29,9 +29,35 @@ module "rosa_oidc_provider" {
   tags                        = var.tags
 }
 
+
+locals {
+  version_list = var.create_account_roles && var.all_versions != null ? [for s in var.all_versions.items : s.name] : []
+}
+
+resource "null_resource" "validate_all_version_input" {
+  count = var.create_account_roles ? 1 : 0
+  lifecycle {
+    precondition {
+      condition     = var.all_versions != null
+      error_message = "ERROR: Expected `all_versions` as an input variable"
+    }
+  }
+}
+
+resource "null_resource" "validate_openshift_version" {
+  count = var.create_account_roles && null_resource.validate_all_version_input != null ? 1 : 0
+  lifecycle {
+    precondition {
+      condition     = contains(local.version_list, var.rosa_openshift_version)
+      error_message = "ERROR: Expected a valid OpenShift version. Valid versions: ${join(", ",local.version_list)}"
+    }
+  }
+}
+
+
 module "rosa_account_roles" {
   source = "./account_roles_creation"
-  count  = var.create_account_roles ? 1 : 0
+  count  = var.create_account_roles && null_resource.validate_openshift_version != null ? 1 : 0
 
   account_role_prefix    = var.account_role_prefix
   rosa_openshift_version = var.rosa_openshift_version
@@ -42,6 +68,7 @@ module "rosa_account_roles" {
   tags                   = var.tags
   path                   = var.path
 }
+
 
 module "rosa_oidc_config_resources" {
   source = "./oidc_config_resources"

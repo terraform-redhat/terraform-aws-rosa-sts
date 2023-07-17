@@ -66,8 +66,9 @@ variable "account_role_prefix" {
 }
 
 variable "rosa_openshift_version" {
-  type    = string
-  default = "4.12"
+  description = "Desired version of OpenShift for the cluster, for example '4.1.0'. If version is greater than the currently running version, an upgrade will be scheduled."
+  type        = string
+  default     = "4.13.0"
 }
 
 variable "ocm_environment" {
@@ -96,6 +97,23 @@ variable "operator_role_policies" {
     openshift_image_registry_installer_cloud_credentials_policy                       = string
     openshift_ingress_operator_cloud_credentials_policy                               = string
     openshift_machine_api_aws_cloud_credentials_policy                                = string
+  })
+  default = null
+}
+
+variable "all_versions" {
+  description = "OpenShift versions"
+  type        = object({
+    item = object({
+      id   = string
+      name = string
+    })
+    search = string
+    order  = string
+    items  = list(object({
+      id   = string
+      name = string
+    }))
   })
   default = null
 }
