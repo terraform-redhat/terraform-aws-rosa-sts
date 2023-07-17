@@ -11,7 +11,7 @@ terraform {
   }
 }
 
-provider "ocm" {
+provider "rhcs" {
   token = var.token
   url   = var.url
 }

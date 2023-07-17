@@ -3,6 +3,5 @@ output "secret_arn" {
 }
 
 output "account_role_prefix" {
-  value = var.create_account_roles ? module.rosa_account_roles[0].account_role_prefix : null
+  value = var.create_account_roles && length(module.rosa_account_roles) > 0 ? module.rosa_account_roles[0].account_role_prefix : null
 }
-
