@@ -31,11 +31,14 @@ module "rosa_oidc_provider" {
 
 
 locals {
-  version_list = var.create_account_roles && var.all_versions != null ? [for s in var.all_versions.items : s.name] : []
+  selected_version = var.rosa_openshift_version == "" ? "4.13" : var.rosa_openshift_version
+  patch_version_list = var.create_account_roles && var.all_versions != null ? [for s in var.all_versions.items : s.name] : []
+  minor_version_list = local.patch_version_list != [] ? distinct([for s in local.patch_version_list : format("%s.%s", split(".", s)[0], split(".", s)[1])]) : []
 }
 
 resource "null_resource" "validate_all_version_input" {
-  count = var.create_account_roles ? 1 : 0
+  # validate that all_versions was sent only if the variable "rosa_openshift_version" was set
+  count = var.create_account_roles && var.rosa_openshift_version != "" ? 1 : 0
   lifecycle {
     precondition {
       condition     = var.all_versions != null
@@ -45,11 +48,12 @@ resource "null_resource" "validate_all_version_input" {
 }
 
 resource "null_resource" "validate_openshift_version" {
-  count = var.create_account_roles && null_resource.validate_all_version_input != null ? 1 : 0
+  # validate version only if creating account roles and the variable "rosa_openshift_version" was set and the validation in validate_all_version_input was passed
+  count = var.create_account_roles && var.rosa_openshift_version != "" && null_resource.validate_all_version_input != null ? 1 : 0
   lifecycle {
     precondition {
-      condition     = contains(local.version_list, var.rosa_openshift_version)
-      error_message = "ERROR: Expected a valid OpenShift version. Valid versions: ${join(", ",local.version_list)}"
+      condition     = contains(local.minor_version_list, var.rosa_openshift_version)
+      error_message = "ERROR: Expected a valid OpenShift version. Valid versions: ${join(", ",local.minor_version_list)}"
     }
   }
 }
@@ -60,7 +64,7 @@ module "rosa_account_roles" {
   count  = var.create_account_roles && null_resource.validate_openshift_version != null ? 1 : 0
 
   account_role_prefix    = var.account_role_prefix
-  rosa_openshift_version = var.rosa_openshift_version
+  rosa_openshift_version = local.selected_version
   ocm_environment        = var.ocm_environment
   account_role_policies  = var.account_role_policies
   operator_role_policies = var.operator_role_policies
