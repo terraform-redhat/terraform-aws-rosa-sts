@@ -14,7 +14,7 @@ resource "random_string" "default_random" {
 }
 
 locals {
-  account_role_generated_if_needed = var.account_role_prefix != ""? var.account_role_prefix : "account-role-${random_string.default_random.result}"
+  account_role_generated_if_needed = var.account_role_prefix != "" ? var.account_role_prefix : "account-role-${random_string.default_random.result}"
 }
 
 module "rosa_account_roles" {
@@ -70,6 +70,10 @@ locals {
       policy_details = var.account_role_policies["sts_instance_controlplane_permission_policy"]
   }]
 
+  shared_vpc_role_arn_replace         = "%%{shared_vpc_role_arn}"
+  openshift_ingress_policy            = var.operator_role_policies["openshift_ingress_operator_cloud_credentials_policy"]
+  shared_vpc_openshift_ingress_policy = replace(var.operator_role_policies["shared_vpc_openshift_ingress_operator_cloud_credentials_policy"], local.shared_vpc_role_arn_replace, var.shared_vpc_role_arn)
+
   # TODO: if there is a new policy for a new OCP versions, need to add it here also
   operator_roles_policy_properties = [{
     # openshift-machine-api
@@ -102,7 +106,7 @@ locals {
     {
       # openshift-ingress-operator
       policy_name    = substr("${local.account_role_generated_if_needed}-openshift-ingress-operator-cloud-credentials", 0, 64)
-      policy_details = var.operator_role_policies["openshift_ingress_operator_cloud_credentials_policy"]
+      policy_details = var.shared_vpc_role_arn == "" ? local.openshift_ingress_policy : local.shared_vpc_openshift_ingress_policy
       namespace      = "openshift-ingress-operator"
       operator_name  = "cloud-credentials"
     },

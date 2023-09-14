@@ -68,6 +68,7 @@ module "rosa_account_roles" {
   ocm_environment        = var.ocm_environment
   account_role_policies  = var.account_role_policies
   operator_role_policies = var.operator_role_policies
+  shared_vpc_role_arn    = var.shared_vpc_role_arn
   permissions_boundary   = var.permissions_boundary
   tags                   = var.tags
   path                   = var.path

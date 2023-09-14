@@ -96,9 +96,16 @@ variable "operator_role_policies" {
     openshift_cluster_csi_drivers_ebs_cloud_credentials_policy                        = string
     openshift_image_registry_installer_cloud_credentials_policy                       = string
     openshift_ingress_operator_cloud_credentials_policy                               = string
+    shared_vpc_openshift_ingress_operator_cloud_credentials_policy                    = string
     openshift_machine_api_aws_cloud_credentials_policy                                = string
   })
   default = null
+}
+
+variable "shared_vpc_role_arn" {
+  description = "The role ARN used to access the private hosted zone, in case shared VPC is used"
+  type        = string
+  default     = ""
 }
 
 variable "all_versions" {
