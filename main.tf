@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = ">= 4.0"
     }
   }
 }
@@ -31,7 +31,7 @@ module "rosa_oidc_provider" {
 
 
 locals {
-  selected_version = var.rosa_openshift_version == "" ? "4.13" : var.rosa_openshift_version
+  selected_version   = var.rosa_openshift_version == "" ? "4.13" : var.rosa_openshift_version
   patch_version_list = var.create_account_roles && var.all_versions != null ? [for s in var.all_versions.items : s.name] : []
   minor_version_list = local.patch_version_list != [] ? distinct([for s in local.patch_version_list : format("%s.%s", split(".", s)[0], split(".", s)[1])]) : []
 }
@@ -53,7 +53,7 @@ resource "null_resource" "validate_openshift_version" {
   lifecycle {
     precondition {
       condition     = contains(local.minor_version_list, var.rosa_openshift_version)
-      error_message = "ERROR: Expected a valid OpenShift version. Valid versions: ${join(", ",local.minor_version_list)}"
+      error_message = "ERROR: Expected a valid OpenShift version. Valid versions: ${join(", ", local.minor_version_list)}"
     }
   }
 }
