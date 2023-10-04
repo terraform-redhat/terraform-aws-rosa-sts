@@ -74,7 +74,7 @@ variable "rosa_openshift_version" {
 variable "ocm_environment" {
   description = "The OCM environments should be one of those: production, staging, integration, local"
   type        = string
-  default     = ""
+  default     = "production"
 }
 
 variable "account_role_policies" {
@@ -110,14 +110,14 @@ variable "shared_vpc_role_arn" {
 
 variable "all_versions" {
   description = "OpenShift versions"
-  type        = object({
+  type = object({
     item = object({
       id   = string
       name = string
     })
     search = string
     order  = string
-    items  = list(object({
+    items = list(object({
       id   = string
       name = string
     }))
