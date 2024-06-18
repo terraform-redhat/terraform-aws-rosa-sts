@@ -1,6 +1,8 @@
 # ROSA STS terraform module
 
+This module repo is legacy; please use https://registry.terraform.io/modules/terraform-redhat/rosa-classic/rhcs/latest instead.
 Create rosa account IAM roles, operator IAM roles and OIDC provider in a declarative way
+
 Terraform AWS ROSA STS
 
 In order to deploy [ROSA](https://docs.openshift.com/rosa/welcome/index.html) with [STS](https://docs.openshift.com/rosa/rosa_planning/rosa-sts-aws-prereqs.html), AWS Account needs to have the following roles placed:
