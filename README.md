@@ -1,6 +1,6 @@
 # ROSA STS terraform module
 
-This module repo is legacy; please use https://registry.terraform.io/modules/terraform-redhat/rosa-classic/rhcs/latest instead.
+This module is legacy; use https://registry.terraform.io/modules/terraform-redhat/rosa-classic/rhcs/latest instead, for ROSA classic clusters.
 Create rosa account IAM roles, operator IAM roles and OIDC provider in a declarative way
 
 Terraform AWS ROSA STS
